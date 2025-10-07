@@ -62,11 +62,61 @@ def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
 
     return segments
 
+def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
+    """
+    Read text from each image segment and return them as a dictionary.
+    """
+
+    poster_info = dict()
+
+    for key, cropped_img in segments.items():
+
+        if "bottom_details" == key:
+            # For bottom details, extract multiple lines of text
+            bottom_details = extract_image_text(cropped_img).split("\n\n")
+
+            bottom_details.pop(2) # Remove "You Have Any Information Please Contact:"
+
+            # GET "DETAILS" FIELD FROM POSTER
+            
+            details = bottom_details[0].replace('\n', ' ').strip() # Get first list item
+
+            details = " ... ".join(details.split("...")) # Add spaces around ellipses
+
+            poster_info["details"] = details    # Set JSON object's "detail" key as cleaned "details" value 
+
+            
+            
+            # GET "LAST SEEN" FIELD FROM POSTER
+
+            last_seen = bottom_details[1][3:].strip().replace('\n', ' ') # Remove "an:" and clean whitespace
+            
+            poster_info["last_seen"] = last_seen # Set JSON object's "last_seen" key as cleaned "last seen" value
+
+            # GET "CONTACT" FIELD FROM POSTER
+
+            contact = bottom_details[2].strip()[:12]
+
+            poster_info["contact"] = contact # Set JSON object's "contact" key as cleaned "contact" value
+
+            # GET "EMAIL" AND "PET ID" FIELDS FROM POSTER
+
+            email, pet_id = bottom_details[3].strip().split(' ')
+
+            poster_info["email"] = email.strip() # Set JSON object's "email" key as cleaned "email" value
+            poster_info["pet_id"] = pet_id.strip() # Set JSON object's "pet_id" key as cleaned "pet_id" value
+
+            continue # End of "bottom_details" processing
+
+    return poster_info
+
+
 if "__main__" == __name__:
     poster_file_path = get_file_path("Enter the image file path")
     
     poster_raw = get_raw_image(poster_file_path)
 
     poster_crops = get_image_segments(poster_raw)
-    poster_key = "bottom_details"
-    poster_crops[poster_key].show()
+
+    poster_contents = img_crops_to_json(poster_crops)
+    print("Poster contents:\n", poster_contents)
