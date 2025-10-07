@@ -31,15 +31,19 @@ def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
     left, right = 67, 745
     top, bottom = 23, 919
 
-    img_segments = dict()
+    segments = dict()
+
+    segments["website"] = img.crop((left, top, right, 110)) # crop website title
 
     # crop image into segments based on predefined coordinates
 
-    return img_segments
+    return segments
 
 if "__main__" == __name__:
     poster_file_path = get_file_path("Enter the image file path")
     
     poster_raw = get_raw_image(poster_file_path)
-    print(poster_raw.size)
-    poster_raw.show()
+
+    poster_crops = get_image_segments(poster_raw)
+    poster_key = "website"
+    poster_crops[poster_key].show()
