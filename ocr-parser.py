@@ -25,6 +25,9 @@ def get_raw_image(img_path: str) -> Image.Image:
     # Make sure image has standard dimensions as seen in the emails
     img = img.resize((813, 1053))
 
+    # Crop image to remove red borders
+    img = img.crop((67, 23, 745, 919))
+
     return img
 
 def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
