@@ -18,6 +18,17 @@ def get_file_path(prompt_msg: str="Enter file path") -> str:
 
     return path
 
+def get_raw_image(img_path: str) -> Image.Image:
+
+    img = Image.open(img_path) # Open image file
+
+    # Make sure image has standard dimensions as seen in the emails
+    img = img.resize((813, 1053))
+
+    return img
+
 if "__main__" == __name__:
-    img_file_path = get_file_path("Enter the image file path")
-    print(img_file_path)
+    poster_file_path = get_file_path("Enter the image file path")
+    
+    poster_raw = get_raw_image(poster_file_path)
+    poster_raw.show()
