@@ -20,15 +20,24 @@ def get_file_path(prompt_msg: str="Enter file path") -> str:
         path = input(msg).replace('"', '').replace("'", '')
 
     path = os.path.abspath(path) # Convert to absolute path
+    print(f"File FOUND at: {path}")
+    print('\n')
 
     return path
 
 def get_raw_image(img_path: str) -> Image.Image:
 
-    img = Image.open(img_path) # Open image file
+    # Open image file
+    print("Loading image ...")
+    img = Image.open(img_path)
+    print("Image successfully LOADED.")
+    print('\n')
 
     # Make sure image has standard dimensions as seen in the emails
+    print("Resizing image to 813px X 1053px ...")
     img = img.resize((813, 1053))
+    print("Image successfully SCALED.")
+    print('\n')
 
     return img
 
@@ -37,7 +46,9 @@ def extract_image_text(img: Image.Image) -> str:
     Extract text from the input image using OCR and return it as a string.
     """
 
+    print("Extracting image text via OCR ...")
     extracted_text = pytesseract.image_to_string(img)
+    print(f"Image text successfully extracted: {extracted_text}")
 
     return extracted_text
 
@@ -50,6 +61,9 @@ def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
     top = 23
 
     segments = dict()
+
+    print("Cropping and segmenting image for compartmentalized text-extraction ...")
+    print('\n')
 
     segments["website"] = img.crop((left, top, right, 110)) # crop website (e.g.: LostMyDoggie.com)
 
@@ -65,6 +79,9 @@ def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
     
     segments["bottom_details"] = img.crop((200, 670, right, img.size[1])) # crop remaining details at the end of poster
 
+    print("Image segmentation successfully completed.")
+    print('\n')
+
     return segments
 
 def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
@@ -73,6 +90,8 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
     """
 
     poster_info = dict()
+
+    print("Parsing image segment content into JSON object ...")
 
     for key, cropped_img in segments.items():
 
@@ -143,6 +162,9 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
             continue # End of "info" processing
 
         poster_info[key] = extract_image_text(cropped_img).strip() # Set other fields as extracted values
+
+    print("Image segment parsing complete.")
+    print('\n')
 
 
     # CONVERT TO JSON AND RETURN
