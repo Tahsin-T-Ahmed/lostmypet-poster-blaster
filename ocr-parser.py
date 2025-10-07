@@ -27,6 +27,14 @@ def get_raw_image(img_path: str) -> Image.Image:
 
     return img
 
+def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
+
+    img_segments = dict()
+
+    # crop image into segments based on predefined coordinates
+
+    return img_segments
+
 if "__main__" == __name__:
     poster_file_path = get_file_path("Enter the image file path")
     
