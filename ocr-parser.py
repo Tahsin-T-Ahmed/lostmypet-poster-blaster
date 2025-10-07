@@ -1,4 +1,5 @@
 from datetime import datetime
+import ftfy
 import json
 import os
 from PIL import Image
@@ -158,6 +159,11 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
 
         poster_info[key] = extract_image_text(cropped_img).strip() # Set other fields as extracted values
 
+    # Clear non-standard characters by replacing with standard characters
+    for key in poster_info:
+        poster_info[key] = ftfy.fix_text(poster_info[key])
+
+    # Add URL key to poster dictionary
     poster_info["url"] = f"https://{poster_info['website']}/details.cfm?petid={poster_info['pet_id']}"
 
     print("Image segment parsing complete.")
@@ -168,8 +174,7 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
     poster_json = json.dumps(poster_info, indent=4)
     return poster_json
 
-
-if "__main__" == __name__:
+def ocr_flow():
     poster_file_path = get_file_path("Enter the image file path")
     
     poster_raw = get_raw_image(poster_file_path)
@@ -178,3 +183,8 @@ if "__main__" == __name__:
 
     poster_contents = img_crops_to_json(poster_crops)
     print("Poster contents:\n", poster_contents)
+
+    return poster_contents
+
+if "__main__" == __name__:
+    ocr_flow()
