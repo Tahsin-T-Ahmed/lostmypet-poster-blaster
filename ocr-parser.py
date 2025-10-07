@@ -58,8 +58,7 @@ def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
 
     segments["color"] = img.crop((170, 625, right, 675)) # crop color (e.g.: "Black")
     
-    ## PLACEHOLDER FOR FUTURE CROPS ##
-    segments["details"] = img.crop((200, 670, right, img.size[1]))
+    segments["bottom_details"] = img.crop((200, 670, right, img.size[1])) # crop remaining details at the end of poster
 
     return segments
 
@@ -69,5 +68,5 @@ if "__main__" == __name__:
     poster_raw = get_raw_image(poster_file_path)
 
     poster_crops = get_image_segments(poster_raw)
-    poster_key = "details"
+    poster_key = "bottom_details"
     poster_crops[poster_key].show()
