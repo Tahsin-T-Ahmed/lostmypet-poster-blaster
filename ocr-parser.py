@@ -117,6 +117,21 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
 
             continue # End of "sex" processing
 
+        if "info" == key:
+            info = extract_image_text(cropped_img).strip()
+            date = info[-8:].strip() # Get last 8 characters (e.g.: "09/27/25")
+            name = info[:-13].strip()
+
+            # Remove quotation marks from name
+            name = name.replace("'", '')
+            name = name.replace('"', '')
+
+            # Set "name" and "date" variables to newly cleaned values in poster_info dictionary
+            poster_info["name"], poster_info["date"] = name, date
+
+            continue # End of "info" processing
+            
+
     return poster_info
 
 
