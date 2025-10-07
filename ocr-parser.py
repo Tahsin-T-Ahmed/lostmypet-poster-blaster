@@ -28,8 +28,12 @@ def get_raw_image(img_path: str) -> Image.Image:
     return img
 
 def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
+    """
+    Crop the input image into predefined segments and return them as a dictionary.
+    """
+
     left, right = 67, 745
-    top, bottom = 23, 937
+    top = 23
 
     segments = dict()
 
@@ -45,11 +49,7 @@ def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
 
     segments["color"] = img.crop((170, 625, right, 675)) # crop color (e.g.: "Black")
 
-    segments["email"] = img.crop((left, 900, 685, bottom)) # crop email (e.g.: "info@lostmydoggie.com")
-
-    segments["contact"] = img.crop((left, 845, right, 905)) # crop contact info (e.g.: "555-555-5555")
-
-    # crop image into segments based on predefined coordinates
+       
 
     return segments
 
