@@ -83,7 +83,7 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
 
             details = " ... ".join(details.split("...")) # Add spaces around ellipses
 
-            poster_info["details"] = details    # Set JSON object's "detail" key as cleaned "details" value 
+            poster_info["details"] = details    # Set JSON object's "details" as cleaned value 
 
             
             
@@ -91,27 +91,31 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
 
             last_seen = bottom_details[1][3:].strip().replace('\n', ' ') # Remove "an:" and clean whitespace
             
-            poster_info["last_seen"] = last_seen # Set JSON object's "last_seen" key as cleaned "last seen" value
+            poster_info["last_seen"] = last_seen # Set JSON object's "last_seen" as cleaned  value
 
             # GET "CONTACT" FIELD FROM POSTER
 
             contact = bottom_details[2].strip()[:12]
 
-            poster_info["contact"] = contact # Set JSON object's "contact" key as cleaned "contact" value
+            poster_info["contact"] = contact # Set JSON object's "contact" as cleaned value
 
             # GET "EMAIL" AND "PET ID" FIELDS FROM POSTER
 
             email, pet_id = bottom_details[3].strip().split(' ')
 
-            poster_info["email"] = email.strip() # Set JSON object's "email" key as cleaned "email" value
-            poster_info["pet_id"] = pet_id.strip() # Set JSON object's "pet_id" key as cleaned "pet_id" value
+            poster_info["email"] = email.strip() # Set JSON object's "email" as cleaned value
+            poster_info["pet_id"] = pet_id.strip() # Set JSON object's "pet_id" as cleaned value
 
             continue # End of "bottom_details" processing
 
         if "sex" == key:
             sex = extract_image_text(cropped_img).strip()
 
-            print(sex)
+            sex = sex.split(' ')[1] # Get second term after space (e.g.: "M")
+
+            poster_info["sex"] = sex.strip() # Set JSON object's "sex" value as cleaned value
+
+            continue # End of "sex" processing
 
     return poster_info
 
@@ -124,4 +128,4 @@ if "__main__" == __name__:
     poster_crops = get_image_segments(poster_raw)
 
     poster_contents = img_crops_to_json(poster_crops)
-    # print("Poster contents:\n", poster_contents)
+    print("Poster contents:\n", poster_contents)
