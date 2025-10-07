@@ -1,11 +1,8 @@
+from datetime import datetime
+import json
 import os
 from PIL import Image
 import pytesseract
-import calendar
-import json
-
-def get_months() -> dict[str, str]:
-    return list(calendar.month_name)
 
 def get_file_path(prompt_msg: str="Enter file path") -> str:
 
@@ -150,11 +147,9 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
             name = name.replace("'", '')
             name = name.replace('"', '')
 
-            # Change date month to three-letter abbreviation, to avoid international format confusion
-            month_index = int(date[:2])
-            month = get_months()[month_index]
-            month_abbr = month[:3].upper()
-            date = month_abbr + date[2:]
+            # Re-format date to YYYY-MMM-DD (e.g.: 2025-OCT-07)
+            date_object = datetime.strptime(date, "%m/%d/%y")   # Parse date as datetime object
+            date = date_object.strftime("%Y-%b-%d").upper()     # Output parsed date into new format
 
             # Set "name" and "date" variables to newly cleaned values in poster_info dictionary
             poster_info["name"], poster_info["date"] = name, date
