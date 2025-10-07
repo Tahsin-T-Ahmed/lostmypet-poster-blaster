@@ -29,7 +29,7 @@ def get_raw_image(img_path: str) -> Image.Image:
 
 def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
     left, right = 67, 745
-    top, bottom = 23, 919
+    top, bottom = 23, 937
 
     segments = dict()
 
