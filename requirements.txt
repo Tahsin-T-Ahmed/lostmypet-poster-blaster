@@ -1,3 +1,5 @@
+ftfy==6.3.1
 packaging==25.0
 pillow==11.3.0
 pytesseract==0.3.13
+wcwidth==0.2.14
