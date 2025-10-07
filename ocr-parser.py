@@ -27,6 +27,15 @@ def get_raw_image(img_path: str) -> Image.Image:
 
     return img
 
+def extract_image_text(img: Image.Image) -> str:
+    """
+    Extract text from the input image using OCR and return it as a string.
+    """
+
+    extracted_text = pytesseract.image_to_string(img)
+
+    return extracted_text
+
 def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
     """
     Crop the input image into predefined segments and return them as a dictionary.
