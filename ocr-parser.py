@@ -45,6 +45,8 @@ def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
 
     segments["email"] = img.crop((left, 900, 685, bottom)) # crop email (e.g.: "info@lostmydoggie.com")
 
+    segments["contact"] = img.crop((left, 845, right, 905)) # crop contact info (e.g.: "555-555-5555")
+
     # crop image into segments based on predefined coordinates
 
     return segments
@@ -55,5 +57,5 @@ if "__main__" == __name__:
     poster_raw = get_raw_image(poster_file_path)
 
     poster_crops = get_image_segments(poster_raw)
-    poster_key = "email"
+    poster_key = "contact"
     poster_crops[poster_key].show()
