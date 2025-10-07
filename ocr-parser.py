@@ -33,9 +33,11 @@ def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
 
     segments = dict()
 
-    segments["website"] = img.crop((left, top, right, 110)) # crop website (e.g., LostMyDoggie.com)
+    segments["website"] = img.crop((left, top, right, 110)) # crop website (e.g.: LostMyDoggie.com)
 
-    segments["headline"] = img.crop((left, 100, right, 190)) # crop headline (e.g., "LOST DOG")
+    segments["headline"] = img.crop((left, 100, right, 190)) # crop headline (e.g.: "LOST DOG")
+
+    segments["info"] = img.crop((left, 180, right, 232)) # crop info (e.g.: "PetName" Lost 09/27/25)
 
     # crop image into segments based on predefined coordinates
 
@@ -47,5 +49,5 @@ if "__main__" == __name__:
     poster_raw = get_raw_image(poster_file_path)
 
     poster_crops = get_image_segments(poster_raw)
-    poster_key = "headline"
+    poster_key = "info"
     poster_crops[poster_key].show()
