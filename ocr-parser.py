@@ -54,7 +54,7 @@ def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
 
     segments["breed"] = img.crop((184, 590, 548, 635)) # crop breed (e.g.: "German Shepherd")
 
-    segments["sex"] = img.crop((625, 590, right, 635)) # crop sex (e.g.: "F")
+    segments["sex"] = img.crop((540, 590, right, 635)) # crop sex (e.g.: "F")
 
     segments["color"] = img.crop((170, 625, right, 675)) # crop color (e.g.: "Black")
     
@@ -108,6 +108,11 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
 
             continue # End of "bottom_details" processing
 
+        if "sex" == key:
+            sex = extract_image_text(cropped_img).strip()
+
+            print(sex)
+
     return poster_info
 
 
@@ -119,4 +124,4 @@ if "__main__" == __name__:
     poster_crops = get_image_segments(poster_raw)
 
     poster_contents = img_crops_to_json(poster_crops)
-    print("Poster contents:\n", poster_contents)
+    # print("Poster contents:\n", poster_contents)
