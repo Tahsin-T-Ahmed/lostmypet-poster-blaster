@@ -2,6 +2,7 @@ import os
 from PIL import Image
 import pytesseract
 import calendar
+import json
 
 def get_months() -> dict[str, str]:
     return list(calendar.month_name)
@@ -140,9 +141,13 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
             poster_info["name"], poster_info["date"] = name, date
 
             continue # End of "info" processing
-            
 
-    return poster_info
+        poster_info[key] = extract_image_text(cropped_img).strip() # Set other fields as extracted values
+
+
+    # CONVERT TO JSON AND RETURN
+    poster_json = json.dumps(poster_info)
+    return poster_json
 
 
 if "__main__" == __name__:
