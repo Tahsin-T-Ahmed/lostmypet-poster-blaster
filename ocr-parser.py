@@ -41,6 +41,8 @@ def get_image_segments(img: Image.Image) -> dict[str, Image.Image]:
 
     segments["breed"] = img.crop((184, 590, 548, 635)) # crop breed (e.g.: "German Shepherd")
 
+    segments["sex"] = img.crop((625, 590, right, 635)) # crop sex (e.g.: "F")
+
     # crop image into segments based on predefined coordinates
 
     return segments
@@ -51,5 +53,5 @@ if "__main__" == __name__:
     poster_raw = get_raw_image(poster_file_path)
 
     poster_crops = get_image_segments(poster_raw)
-    poster_key = "breed"
+    poster_key = "sex"
     poster_crops[poster_key].show()
