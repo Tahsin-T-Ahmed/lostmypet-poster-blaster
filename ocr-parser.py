@@ -163,12 +163,14 @@ def img_crops_to_json(segments: dict[str, Image.Image]) -> dict[str, str]:
 
         poster_info[key] = extract_image_text(cropped_img).strip() # Set other fields as extracted values
 
+    poster_info["url"] = f"https://{poster_info['website']}/details.cfm?petid={poster_info['pet_id']}"
+
     print("Image segment parsing complete.")
     print('\n')
 
 
     # CONVERT TO JSON AND RETURN
-    poster_json = json.dumps(poster_info)
+    poster_json = json.dumps(poster_info, indent=4)
     return poster_json
 
 
